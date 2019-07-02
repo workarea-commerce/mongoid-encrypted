@@ -1,5 +1,7 @@
 # Mongoid::Encrypted
 
+[![Build Status](https://travis-ci.com/workarea-commerce/mongoid-encrypted.svg?branch=master)](https://travis-ci.com/workarea-commerce/mongoid-encrypted)
+
 `mongoid-encrypted` provides simple encryption for mongoid fields utilizing the message encryption provided by Rails.
 
 ## Installation
