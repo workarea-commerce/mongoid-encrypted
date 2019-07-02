@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    mongoid-encrypted (0.1.0)
+    mongoid-encrypted (1.0.0)
       activesupport (>= 5.2.0)
       mongoid (>= 6.4.0)
 
