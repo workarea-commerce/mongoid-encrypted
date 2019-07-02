@@ -1,8 +1,6 @@
 # Mongoid::Encrypted
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/mongoid/encrypted`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+`mongoid-encrypted` provides simple encryption for mongoid fields utilizing the message encryption provided by Rails.
 
 ## Installation
 
@@ -22,7 +20,48 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+```ruby
+class SuperSecret
+  include Mongoid::Document
+  include Mongoid::Encrypted
+
+  field :access_code, type: String, encrypted: true
+end
+```
+
+### Configuration
+
+### Encryption Key
+
+To match Rails conventions, `mongoid-encrypted` is configured to look for the encryption key in either an environment variable, or a key file. Either of these can be configured as desired if you are not using Rails, or wish to have a separate key for encrypted Mongoid fields.
+
+```ruby
+# Default
+Mongoid::Encrypted.configuration.env_key #=> RAILS_MASTER_KEY
+Mongoid::Encrypted.configuration.key_path #=> config/master.key
+```
+
+The environment variable will take precedence over the key file. If you want to change either of these values, you can do so during initialization of the application.
+
+```ruby
+Mongoid::Encrypted.configure do |config|
+  config.env_key = 'MONGOID_ENCRYPTED_KEY'
+  config.key_path = 'config/db.key'
+end
+```
+
+### Rotations
+
+`Mongoid::Encrypted.configuration.rotations`
+
+`mongoid-encrypted` provides a mechanism to change keys or encryption while not losing data added with old values. Use this to add fallbacks to Workarea::Encryptor. See [the Rails guides on `ActiveSupport::MessageEncryptor`](https://edgeapi.rubyonrails.org/classes/ActiveSupport/MessageEncryptor.html) for info on options that can be passed to `#rotate`.
+
+```ruby
+Mongoid::Encrypted.configure do |config|
+  config.rotations << ['PREVIOUS_KEY'].pack("H*")
+  config.rotations << { cipher: 'aes-128-gcm' }
+end  
+```
 
 ## Development
 
