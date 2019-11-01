@@ -31,6 +31,8 @@ class SuperSecret
 end
 ```
 
+**Be sure to add any encrypted fields to `Rails.application.config.filter_parameters` to ensure raw values are not output to log files**
+
 ### Configuration
 
 ### Encryption Key
