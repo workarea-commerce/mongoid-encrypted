@@ -7,8 +7,6 @@ module Mongoid
       teardown :reset_encryption_key
 
       def test_encryption
-        value = 'foo bar'
-
         message = Encryptor.encrypt('foo bar')
         assert_equal('foo bar', Encryptor.decrypt(message))
 

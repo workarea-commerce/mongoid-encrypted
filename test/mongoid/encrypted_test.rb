@@ -22,6 +22,7 @@ module Mongoid
       )
 
       assert_equal(Fields::Encrypted, model.fields['password'].class)
+      assert(FooModel.encrypted_fields.has_key?('password'))
 
       assert_equal('test password', model.password)
       assert_equal(1234, model.passcode)
@@ -54,6 +55,20 @@ module Mongoid
         { foo: 'bar', baz: 12 },
         Encrypted::Encryptor.decrypt(model.attributes['secrets'])
       )
+
+      model.attributes = {
+        password: 'test password',
+        passcode: 1234,
+        secrets: { foo: 'bar', baz: 12 }
+      }
+
+      assert(model.changes.blank?)
+      refute(model.password_changed?)
+      refute(model.passcode_changed?)
+      refute(model.secrets_changed?)
+
+      model.attributes =  { password: 'changed password' }
+      assert(model.password_changed?)
     end
   end
 end
